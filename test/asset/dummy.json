@@ -1,0 +1,58 @@
+{
+  "version": 4,
+  "terraform_version": "1.0.4",
+  "serial": 0,
+  "lineage": "123456-789-101112-13-14-15ABC",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "google_compute_instance",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": []
+    },
+    {
+      "module": "module.testgrp",
+      "mode": "managed",
+      "type": "google_compute_instance",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": []
+    },
+    {
+      "module": "module.testvms[0]",
+      "mode": "managed",
+      "type": "azurerm_network_interface",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": [
+        {
+          "index_key": "testvm00",
+          "attributes": {
+            "ip_configuration": [
+              {
+                "name": "testvm00_ip",
+                "primary": true,
+                "private_ip_address": "192.168.1.1",
+                "private_ip_address_allocation": "Dynamic",
+                "private_ip_address_version": "IPv4",
+                "public_ip_address_id": "",
+                "subnet_id": "/subscriptions/0000000000000/resourceGroups/RG_001/providers/Microsoft.Network/virtualNetworks/RG_001-vnet/subnets/second"
+              }
+            ]
+          },
+          "private": ""
+        }
+      ]
+    },
+    {
+      "module": "module.testvms[0]",
+      "mode": "managed",
+      "type": "azurerm_linux_virtual_machine",
+      "name": "default",
+      "provider": "provider[\"registry.terraform.io/hashicorp/azurerm\"]",
+      "instances": []
+    }
+  ]
+}

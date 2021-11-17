@@ -1,0 +1,14 @@
+name: 'terraform-ansible-inventory'
+description: 'Create terraform inventory from state file, using resource names as host groups'
+inputs:
+  state-file:  # id of input
+    description: 'State file in json form'
+    required: true
+    default: '${{ github.workspace }}/state.json'
+  host-file:
+    description: 'Host file name to produce'
+    required: true
+    default: '${{ github.workspace }}/inventory'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
