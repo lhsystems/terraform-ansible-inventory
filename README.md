@@ -30,7 +30,7 @@ A valid state file in JSON format is required.
   run: terraform state pull > state.out
 
 - name: Preprocess the state file for terraform-ansible-inventory action
-  run: grep -vE "/home|^$|^:" state.out > state.json
+  run: grep -vE "/home|/runner|^$|^:" state.out > state.json
 
 ...
 ```
