@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "serial": 7,
+    "modules": [
+        {
+            "path": [
+                "root"
+            ],
+            "outputs": {
+                "myoutputforyou": "this is a output"
+            },
+            "resources": {}
+              
+        }
+    ]
+}
