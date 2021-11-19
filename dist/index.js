@@ -516,8 +516,8 @@ class OidcClient {
             const res = yield httpclient
                 .getJson(id_token_url)
                 .catch(error => {
-                throw new Error(`Failed to get ID Token. \n 
-        Error Code : ${error.statusCode}\n 
+                throw new Error(`Failed to get ID Token. \n
+        Error Code : ${error.statusCode}\n
         Error Message: ${error.result.message}`);
             });
             const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
@@ -8582,7 +8582,7 @@ module.exports = require("zlib");
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/ 	
+/******/
 /******/ 	// The require function
 /******/ 	function __nccwpck_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -8596,7 +8596,7 @@ module.exports = require("zlib");
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/ 	
+/******/
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
@@ -8605,16 +8605,16 @@ module.exports = require("zlib");
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
 /******/ 		}
-/******/ 	
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/ 	
+/******/
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
-/******/ 	
+/******/
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
-/******/ 	
+/******/
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
@@ -8635,14 +8635,14 @@ const tfIPConfigs = utils.getGroups(utils.getResources(jsonData))
 
 function init(){
     try {
-        // Create the hsot file. `host-file` input defined in action metadata file
-        utils.createHostFile(tfIPConfigs, core.getInput('host-file'))
+        // Create the hosts file. `hosts-file` input defined in action metadata file
+        utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
         // Get the JSON webhook payload for the event that triggered the workflow
         const payload = JSON.stringify(github.context.payload, undefined, 2)
         console.log(`The event payload: ${payload}`);
     } catch (error) {
         core.setFailed(error.message);
-    } 
+    }
 }
 
 
