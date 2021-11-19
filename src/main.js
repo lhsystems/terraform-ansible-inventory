@@ -13,14 +13,14 @@ const tfIPConfigs = utils.getGroups(utils.getResources(jsonData))
 
 function init(){
     try {
-        // Create the hsot file. `host-file` input defined in action metadata file
-        utils.createHostFile(tfIPConfigs, core.getInput('host-file'))
+        // Create the hosts file. `hosts-file` input defined in action metadata file
+        utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
         // Get the JSON webhook payload for the event that triggered the workflow
         const payload = JSON.stringify(github.context.payload, undefined, 2)
         console.log(`The event payload: ${payload}`);
     } catch (error) {
         core.setFailed(error.message);
-    } 
+    }
 }
 
 

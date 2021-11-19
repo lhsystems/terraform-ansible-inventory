@@ -20,8 +20,8 @@ A valid state file in JSON format is required.
 
 **Option b)**
   Pull the state file using "terraform state pull" during the workflow run and redirect it to a file. However, you need to filter out the lines what github action append to it.
-  
-  
+
+
   *Example for "Option b)":*
 ```yaml
 ...
@@ -51,7 +51,7 @@ steps:
   run: terraform state pull > state.out
 
 - name: Preprocess the state file for terraform-ansible-inventory
-  run: grep -vE "/home|^$|^:" state.out > state.json 
+  run: grep -vE "/home|^$|^:" state.out > state.json
 
 - name: Create inventory
   uses: lhsystems/terraform-ansible-inventory@v1
@@ -66,8 +66,8 @@ steps:
 
 **Required** 'State file in json form' Default `"${{ github.workspace }}/state.json"`.
 
-## `host-file`
-**Required** 'Host file name to produce' Default `"${{ github.workspace }}/inventory"`.
+## `hosts-file`
+**Required** 'Hosts file name to produce' Default `"${{ github.workspace }}/inventory"`.
 
 # License
 
