@@ -5,8 +5,8 @@ inputs:
     description: 'State file in json form'
     required: true
     default: '${{ github.workspace }}/state.json'
-  host-file:
-    description: 'Host file name to produce'
+  hosts-file:
+    description: 'Hosts file name to produce'
     required: true
     default: '${{ github.workspace }}/inventory'
 runs:
@@ -14,5 +14,5 @@ runs:
   main: 'dist/index.js'
 
 branding:
-  icon: 'list'  
+  icon: 'list'
   color: 'blue'
