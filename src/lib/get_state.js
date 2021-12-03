@@ -11,7 +11,6 @@ async function pullStateFile(source) {
         const apiToken = await core.getInput('api-token')
         const jsonState = await tfe.tfePull(apiToken, organization, workspace)
         return jsonState
-        break;
       }
       default: {
         // Set the action to failed if the state source is not supported
