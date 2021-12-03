@@ -1,14 +1,10 @@
 // Import modules and files
 'use strict';
-const core = require('@actions/core');
-const github = require('@actions/github');
+const core = require('@actions/core')
 
 // Get our utilities
 const utils = require('./lib/utils')
 const getState = require('./lib/get_state')
-
-// Should I get the state file?
-const state_pull = core.getInput('state-pull')
 
 async function statePull() {
     const state_source = await core.getInput('state-source')
@@ -18,16 +14,23 @@ async function statePull() {
 }
 
 async function init(){
+    let jsonData;
+    // Should I get the state file?
+    const state_pull = await core.getBooleanInput('state-pull')
+    console.log(state_pull)
     try {
         if (state_pull) {
-            const jsonData = await statePull()
+            console.log('if!')
+            jsonData = await statePull()
         } else {
+            console.log('if!')
             const jsonFileToRead = await core.getInput('state-file').toString()
-            const jsonData = await require(jsonFileToRead)
+            jsonData = await require(jsonFileToRead)
         }
+        console.log(jsonData)
         const tfIPConfigs = await utils.getGroups(utils.getResources(jsonData))
         // Create the hosts file. `hosts-file` input defined in action metadata file
-        utils.createHostFile(tfIPConfigs, 'hosts-file')
+        await utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
     } catch (error) {
         core.setFailed(error.message);
     }
