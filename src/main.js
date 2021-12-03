@@ -5,23 +5,32 @@ const github = require('@actions/github');
 
 // Get our utilities
 const utils = require('./lib/utils')
+const getState = require('./lib/get_state')
 
+// Should I get the state file?
+const state_pull = core.getInput('state-pull')
 
-const jsonFileToRead = core.getInput('state-file').toString()
-const jsonData = require(jsonFileToRead)
-const tfIPConfigs = utils.getGroups(utils.getResources(jsonData))
+async function statePull() {
+    const state_source = await core.getInput('state-source')
+    const stateFileName = await core.getInput('state-file')
+    const jsonName = await getState.pullStateFile(state_source, stateFileName)
+    return jsonName
+}
 
-function init(){
+async function init(){
     try {
+        if (state_pull) {
+            const jsonData = await statePull()
+        } else {
+            const jsonFileToRead = await core.getInput('state-file').toString()
+            const jsonData = await require(jsonFileToRead)
+        }
+        const tfIPConfigs = await utils.getGroups(utils.getResources(jsonData))
         // Create the hosts file. `hosts-file` input defined in action metadata file
-        utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
-        // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github.context.payload, undefined, 2)
-        console.log(`The event payload: ${payload}`);
+        utils.createHostFile(tfIPConfigs, 'hosts-file')
     } catch (error) {
         core.setFailed(error.message);
     }
 }
-
 
 init()

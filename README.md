@@ -19,18 +19,20 @@ A valid state file in JSON format is required.
   Pull the state file in JSON format and place it to your repository.
 
 **Option b)**
-  Pull the state file using "terraform state pull" during the workflow run and redirect it to a file. However, you need to filter out the lines what github action append to it.
-
+  Pull the state file using "terraform state pull" during the workflow run and redirect it to a file. However, you need to set `terraform_wrapper`  to `false` for the terraform setup action to filter out the lines what the wrapper generates.
 
   *Example for "Option b)":*
 ```yaml
 ...
+- name: Prepare terraform action
+  uses: hashicorp/setup-terraform@v1
+  with:
+    terraform_wrapper: false
+
+... # plan, apply stage
 
 - name: Pull the state file in json
-  run: terraform state pull > state.out
-
-- name: Preprocess the state file for terraform-ansible-inventory action
-  run: grep -vE "/home|/runner|^$|^:" state.out > state.json
+  run: terraform state pull > state.json
 
 ...
 ```
@@ -46,18 +48,27 @@ steps:
 
 - name: Prepare terraform action
   uses: hashicorp/setup-terraform@v1
+  with:
+    terraform_wrapper: false
+    cli_config_credentials_token: ${{ secrets.YOURTOKEN }}
+
+- name: Terraform Init (init)
+  run: terraform init -upgrade
+
+- name: Terraform Validate (validate)
+  run: terraform validate -no-color
+
+- name: Terraform Apply (apply)
+  run: terraform apply -auto-approve
 
 - name: Pull the state file in json
-  run: terraform state pull > state.out
-
-- name: Preprocess the state file for terraform-ansible-inventory
-  run: grep -vE "/home|^$|^:" state.out > state.json
+  run: terraform state pull > state.json
 
 - name: Create inventory
   uses: lhsystems/terraform-ansible-inventory@v1
   with:
-    state-file: state.json
-    hosts-file: inventory
+    state-file: ${{ github.workspace }}/state.json
+    hosts-file: ${{ github.workspace }}/inventory
 ```
 
 ## Inputs
@@ -68,6 +79,22 @@ steps:
 
 ## `hosts-file`
 **Required** 'Hosts file name to produce' Default `"${{ github.workspace }}/inventory"`.
+
+## `state_pull`
+**Required** 'Whether the action should pull the state file(`true` or `false`).' Default `false`.
+
+## `state_source`
+**Optional (required if state_pull is `true`)** 'The source of the state file. Possible values: `tfe`'
+
+## `organization`
+**Optional (required if state_source is `tfe`)** 'The organization in TFE.'
+
+## `workspace`
+**Optional (required if state_source is `tfe`)** 'The workspace in TFE.'
+
+## `api-token`
+**Optional (required if state_source is `tfe`)** 'The API token for accessing TFE'
+
 
 # License
 
