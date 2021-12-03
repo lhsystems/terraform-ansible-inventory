@@ -17,13 +17,10 @@ async function init(){
     let jsonData;
     // Should I get the state file?
     const state_pull = await core.getBooleanInput('state-pull')
-    console.log(state_pull)
     try {
         if (state_pull) {
-            console.log('if!')
             jsonData = await statePull()
         } else {
-            console.log('if!')
             const jsonFileToRead = await core.getInput('state-file').toString()
             jsonData = await require(jsonFileToRead)
         }
