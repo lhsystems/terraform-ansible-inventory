@@ -26,12 +26,6 @@ async function pullStateFile(source) {
     switch (source) {
       case 'tfe': {
         const apiObject = await getApiObject(source)
-        // const organization = await core.getInput('organization')
-        // const workspace = await core.getInput('workspace')
-        // const apiToken = await core.getInput('api-token')
-        // let apiUrl = await core.getInput('api-url')
-        // apiUrl = apiUrl || 'https://app.terraform.io'
-        // const jsonState = await tfe.tfePull(apiToken, organization, workspace, apiUrl)
         const jsonState = await tfe.tfePull(apiObject.tfe)
         return jsonState
       }
