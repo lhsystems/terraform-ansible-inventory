@@ -2,7 +2,7 @@
 'use strict'
 const core = require('@actions/core')
 const tfe = require('./tfe')
-
+// Pull the state filw from the given source
 async function pullStateFile(source) {
     switch (source) {
       case 'tfe': {
@@ -14,7 +14,7 @@ async function pullStateFile(source) {
       }
       default: {
         // Set the action to failed if the state source is not supported
-        core.setFailed(`Unsupported state source has been detected: ${source}`);        
+        throw new Error(`Unsupported state source has been detected: ${source}`)        
       }
 
     }

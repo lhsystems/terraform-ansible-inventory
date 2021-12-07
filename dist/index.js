@@ -5761,7 +5761,7 @@ exports.debug = debug; // for test
 
 const core = __nccwpck_require__(2186)
 const tfe = __nccwpck_require__(2884)
-
+// Pull the state filw from the given source
 async function pullStateFile(source) {
     switch (source) {
       case 'tfe': {
@@ -5773,7 +5773,7 @@ async function pullStateFile(source) {
       }
       default: {
         // Set the action to failed if the state source is not supported
-        core.setFailed(`Unsupported state source has been detected: ${source}`);        
+        throw new Error(`Unsupported state source has been detected: ${source}`)        
       }
 
     }
@@ -5824,14 +5824,17 @@ async function getDataFromURL(dataUrl, instance) {
 async function tfePull(apiToken, organization, workspace) {
     // Create the axios config for the request
     const instance = axios.create({
-      baseURL: 'https://app.terraform.io',
-      timeout: 5000,
-      headers: {'Authorization': 'Bearer '+ apiToken}
+        baseURL: 'https://app.terraform.io',
+        timeout: 5000,
+        headers: {'Authorization': 'Bearer '+ apiToken}
     });
-    
+    // Setup the URL using the org and ws
     const tfeUrl = `https://app.terraform.io/api/v2/organizations/${organization}/workspaces/${workspace}`
+    // Get the workspace data part of the API response
     const workspaceData = await getDataFromURL(tfeUrl, instance)
+    // Get the URL for the latest state file
     const currentState = await getDataFromURL(workspaceData.data.relationships['current-state-version'].links.related, instance)
+    // Get the state file itself
     const stateFile = await getDataFromURL(currentState.data.attributes['hosted-state-download-url'], instance)
     return stateFile
 }
@@ -6161,29 +6164,27 @@ const core = __nccwpck_require__(2186)
 // Get our utilities
 const utils = __nccwpck_require__(3768)
 const getState = __nccwpck_require__(1101)
-
+// State file pull call
 async function statePull() {
-    const state_source = await core.getInput('state-source')
+    const stateSource = await core.getInput('state-source')
     const stateFileName = await core.getInput('state-file')
-    const jsonName = await getState.pullStateFile(state_source, stateFileName)
+    const jsonName = await getState.pullStateFile(stateSource, stateFileName)
     return jsonName
 }
-
+// Action runner function
 async function init(){
+    // Declare required variables
     let jsonData;
-    // Should I get the state file?
-    const state_pull = await core.getBooleanInput('state-pull')
-    console.log(state_pull)
+    let statePullInput = await core.getBooleanInput('state-pull')
     try {
-        if (state_pull) {
-            console.log('if!')
+        // Check whether the action should pull the state file
+        if (statePullInput) {
             jsonData = await statePull()
         } else {
-            console.log('if!')
             const jsonFileToRead = await core.getInput('state-file').toString()
             jsonData = await require(jsonFileToRead)
         }
-        console.log(jsonData)
+        // Generate the host groups for ansible
         const tfIPConfigs = await utils.getGroups(utils.getResources(jsonData))
         // Create the hosts file. `hosts-file` input defined in action metadata file
         await utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
@@ -6191,7 +6192,7 @@ async function init(){
         core.setFailed(error.message);
     }
 }
-
+// Run the action
 init()
 })();
 

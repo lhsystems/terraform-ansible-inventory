@@ -21,8 +21,9 @@ Contributions to this project are [released](https://help.github.com/articles/gi
 Here are a few things you can do that will increase the likelihood of your pull request being accepted:
 
 - Follow the style guide style by running the linter `npm run lint`.
-- Write tests.
+- Write and run your tests `npm run test`.
 - Keep your change as focused as possible. If there are multiple changes you would like to make that are not dependent upon each other, consider submitting them as separate pull requests.
+- Do not forget to compile your code before PR. `npm run prepare`
 - Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
 ## Resources
