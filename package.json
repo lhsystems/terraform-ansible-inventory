@@ -7,6 +7,7 @@
     "@actions/core": "^1.6.0",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
+    "axios": "^0.24.0",
     "eslint-plugin-jest": "^25.2.3"
   },
   "devDependencies": {
@@ -21,7 +22,7 @@
   "scripts": {
     "lint": "eslint .",
     "prepare": "ncc build src/main.js -o dist --license licenses.txt",
-    "test": "jest",
+    "test": "jest --verbose",
     "all": "npm run lint && npm run prepare && npm run test"
   },
   "repository": {
@@ -36,7 +37,7 @@
     "Inventory",
     "Javascript"
   ],
-  "author": "Lufthansa Systems GmbH & Co. KG (Peter Czegledi <peter.czegledi@lhsystems.com>)",
+  "author": "Lufthansa Systems GmbH & Co. KG",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lhsystems/terraform-ansible-inventory/issues"
