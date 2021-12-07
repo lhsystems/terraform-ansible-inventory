@@ -26,6 +26,9 @@ inputs:
   api-token:
     description: 'The API token for accessing TFE'
     required: false
+  api-url:
+    description: 'Specify the url of your API where the state file located. It will override the default hosted URL if state-source equal to tfe'
+    required: false
 
 runs:
   using: 'node12'

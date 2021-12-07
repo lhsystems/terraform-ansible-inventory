@@ -8,8 +8,7 @@ const getState = require('./lib/get_state')
 // State file pull call
 async function statePull() {
     const stateSource = await core.getInput('state-source')
-    const stateFileName = await core.getInput('state-file')
-    const jsonName = await getState.pullStateFile(stateSource, stateFileName)
+    const jsonName = await getState.pullStateFile(stateSource)
     return jsonName
 }
 // Action runner function
