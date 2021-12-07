@@ -5761,14 +5761,37 @@ exports.debug = debug; // for test
 
 const core = __nccwpck_require__(2186)
 const tfe = __nccwpck_require__(2884)
+
+// Create an object with the required attributes for the API call
+function getApiObject(source) {
+  let apiObject = {}
+  switch(source) {
+    case 'tfe': {
+      apiObject.tfe = {}
+      apiObject.tfe.organization = core.getInput('organization')
+      apiObject.tfe.workspace = core.getInput('workspace')
+      apiObject.tfe.apiToken = core.getInput('api-token')
+      apiObject.tfe.apiUrl = core.getInput('api-url') || 'https://app.terraform.io'
+      return apiObject
+    }
+    default: {
+      return apiObject = {}
+    }
+  }
+}
+
 // Pull the state filw from the given source
 async function pullStateFile(source) {
     switch (source) {
       case 'tfe': {
-        const organization = await core.getInput('organization')
-        const workspace = await core.getInput('workspace')
-        const apiToken = await core.getInput('api-token')
-        const jsonState = await tfe.tfePull(apiToken, organization, workspace)
+        const apiObject = await getApiObject(source)
+        // const organization = await core.getInput('organization')
+        // const workspace = await core.getInput('workspace')
+        // const apiToken = await core.getInput('api-token')
+        // let apiUrl = await core.getInput('api-url')
+        // apiUrl = apiUrl || 'https://app.terraform.io'
+        // const jsonState = await tfe.tfePull(apiToken, organization, workspace, apiUrl)
+        const jsonState = await tfe.tfePull(apiObject.tfe)
         return jsonState
       }
       default: {
@@ -5783,6 +5806,8 @@ async function pullStateFile(source) {
 module.exports = {
     pullStateFile
 }
+
+
 
 /***/ }),
 
@@ -5821,15 +5846,15 @@ async function getDataFromURL(dataUrl, instance) {
 }
 
 // Get the data from the workspace (using async await, instead of nested .then)
-async function tfePull(apiToken, organization, workspace) {
+async function tfePull(apiObject) {
     // Create the axios config for the request
     const instance = axios.create({
-        baseURL: 'https://app.terraform.io',
+        baseURL: apiObject.apiUrl,
         timeout: 5000,
-        headers: {'Authorization': 'Bearer '+ apiToken}
+        headers: {'Authorization': 'Bearer '+ apiObject.apiToken}
     });
     // Setup the URL using the org and ws
-    const tfeUrl = `https://app.terraform.io/api/v2/organizations/${organization}/workspaces/${workspace}`
+    const tfeUrl = `${apiObject.apiUrl}/api/v2/organizations/${apiObject.organization}/workspaces/${apiObject.workspace}`
     // Get the workspace data part of the API response
     const workspaceData = await getDataFromURL(tfeUrl, instance)
     // Get the URL for the latest state file
@@ -6167,8 +6192,7 @@ const getState = __nccwpck_require__(1101)
 // State file pull call
 async function statePull() {
     const stateSource = await core.getInput('state-source')
-    const stateFileName = await core.getInput('state-file')
-    const jsonName = await getState.pullStateFile(stateSource, stateFileName)
+    const jsonName = await getState.pullStateFile(stateSource)
     return jsonName
 }
 // Action runner function

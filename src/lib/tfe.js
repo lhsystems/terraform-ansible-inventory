@@ -9,15 +9,15 @@ async function getDataFromURL(dataUrl, instance) {
 }
 
 // Get the data from the workspace (using async await, instead of nested .then)
-async function tfePull(apiToken, organization, workspace) {
+async function tfePull(apiObject) {
     // Create the axios config for the request
     const instance = axios.create({
-        baseURL: 'https://app.terraform.io',
+        baseURL: apiObject.apiUrl,
         timeout: 5000,
-        headers: {'Authorization': 'Bearer '+ apiToken}
+        headers: {'Authorization': 'Bearer '+ apiObject.apiToken}
     });
     // Setup the URL using the org and ws
-    const tfeUrl = `https://app.terraform.io/api/v2/organizations/${organization}/workspaces/${workspace}`
+    const tfeUrl = `${apiObject.apiUrl}/api/v2/organizations/${apiObject.organization}/workspaces/${apiObject.workspace}`
     // Get the workspace data part of the API response
     const workspaceData = await getDataFromURL(tfeUrl, instance)
     // Get the URL for the latest state file

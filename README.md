@@ -33,16 +33,22 @@ See [action.yml](action.yml) and [USAGE](USAGE.md)
 **Required** 'Whether the action should pull the state file(`true` or `false`).' Default `false`.
 
 ## `state-source`
-**Optional (required if state_pull is `true`)** 'The source of the state file. Possible and default values: `tfe`'
+**Optional (required if state-pull is `true`)** 'The source of the state file. Possible and default values: `tfe`'
 
 ## `organization`
-**Optional (required if state_source is `tfe`)** 'The organization in TFE.'
+**Optional (required if state-source is `tfe`)** 'The organization in TFE.'
 
 ## `workspace`
-**Optional (required if state_source is `tfe`)** 'The workspace in TFE.'
+**Optional (required if state-source is `tfe`)** 'The workspace in TFE.'
 
 ## `api-token`
-**Optional (required if state_source is `tfe`)** 'The API token for accessing TFE'
+**Optional (required if state-source is `tfe`)** 'The API token for accessing TFE'
+
+## `api-url`
+**Optional:**
+- TFE/TFC: The base url of the TFE environment. If the TFE is self hosted then the base URL of your TFE environment. e.g: `'https://mytfe.mycompany.com'`
+  
+  Default: `'https://app.terraform.io'`(hosted/TFC)
 
 
 # License
