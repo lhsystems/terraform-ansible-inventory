@@ -5798,7 +5798,8 @@ async function pullStateFile(source) {
 
 // Exporting the required modules
 module.exports = {
-    pullStateFile
+    pullStateFile,
+    getApiObject
 }
 
 
