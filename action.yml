@@ -9,6 +9,27 @@ inputs:
     description: 'Hosts file name to produce'
     required: true
     default: '${{ github.workspace }}/inventory'
+  state-pull: 
+    description: 'Whether the action should pull the state file(true or false)'
+    required: true
+    default: false
+  state-source:
+    description: 'The source of the state file'
+    required: false
+    default: 'tfe'
+  organization:
+    description: 'The organization in TFE'
+    required: false
+  workspace:
+    description: 'The workspace in TFE'
+    required: false
+  api-token:
+    description: 'The API token for accessing TFE'
+    required: false
+  api-url:
+    description: 'Specify the url of your API where the state file located. It will override the default hosted URL if state-source equal to tfe'
+    required: false
+
 runs:
   using: 'node12'
   main: 'dist/index.js'

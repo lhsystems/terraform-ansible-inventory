@@ -1,27 +1,36 @@
 // Import modules and files
 'use strict';
-const core = require('@actions/core');
-const github = require('@actions/github');
+const core = require('@actions/core')
 
 // Get our utilities
 const utils = require('./lib/utils')
-
-
-const jsonFileToRead = core.getInput('state-file').toString()
-const jsonData = require(jsonFileToRead)
-const tfIPConfigs = utils.getGroups(utils.getResources(jsonData))
-
-function init(){
+const getState = require('./lib/get_state')
+// State file pull call
+async function statePull() {
+    const stateSource = await core.getInput('state-source')
+    const jsonName = await getState.pullStateFile(stateSource)
+    return jsonName
+}
+// Action runner function
+async function init(){
+    // Declare required variables
+    let jsonData;
+    let statePullInput = await core.getBooleanInput('state-pull')
     try {
+        // Check whether the action should pull the state file
+        if (statePullInput) {
+            jsonData = await statePull()
+        } else {
+            const jsonFileToRead = await core.getInput('state-file').toString()
+            jsonData = await require(jsonFileToRead)
+        }
+        // Generate the host groups for ansible
+        const tfIPConfigs = await utils.getGroups(utils.getResources(jsonData))
         // Create the hosts file. `hosts-file` input defined in action metadata file
-        utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
-        // Get the JSON webhook payload for the event that triggered the workflow
-        const payload = JSON.stringify(github.context.payload, undefined, 2)
-        console.log(`The event payload: ${payload}`);
+        await utils.createHostFile(tfIPConfigs, core.getInput('hosts-file'))
     } catch (error) {
         core.setFailed(error.message);
     }
 }
-
-
+// Run the action
 init()
