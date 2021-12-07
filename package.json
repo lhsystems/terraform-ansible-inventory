@@ -36,7 +36,7 @@
     "Inventory",
     "Javascript"
   ],
-  "author": "Lufthansa Systems GmbH & Co. KG (Peter Czegledi <peter.czegledi@lhsystems.com>)",
+  "author": "Lufthansa Systems GmbH & Co. KG",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lhsystems/terraform-ansible-inventory/issues"
