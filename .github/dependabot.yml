@@ -1,9 +1,0 @@
-# !!! This file is managed centrally and periodically synced !!!
-# Basic set up for three package managers
-version: 2
-updates:
-  # Maintain dependencies for npm
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "daily"
