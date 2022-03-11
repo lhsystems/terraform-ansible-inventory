@@ -11,7 +11,7 @@
     "eslint-plugin-jest": "^26.1.1"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.33.1",
+    "@vercel/ncc": "^0.33.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
