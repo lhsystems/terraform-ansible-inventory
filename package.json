@@ -8,7 +8,7 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.0.3",
     "axios": "^0.27.2",
-    "eslint-plugin-jest": "^26.8.1",
+    "eslint-plugin-jest": "^26.8.2",
     "minimist": ">=1.2.6"
   },
   "devDependencies": {
